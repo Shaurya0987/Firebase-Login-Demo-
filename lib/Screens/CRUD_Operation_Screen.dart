@@ -3,7 +3,9 @@ import 'package:firebaselogindemo/Firebase/CRUD_Functions.dart';
 import 'package:flutter/material.dart';
 
 class CrudOperationScreen extends StatelessWidget {
-  const CrudOperationScreen({super.key});
+  CrudOperationScreen({super.key});
+
+  final CrudFunctions services=CrudFunctions();
 
   @override
   Widget build(BuildContext context) {
@@ -18,7 +20,7 @@ class CrudOperationScreen extends StatelessWidget {
           children: [
             ElevatedButton(
               onPressed: () {
-                create("pets", "kitty", "Cuty", "Cat", 1);
+                services.createData("pets", "kitty", "Cuty", "Cat", 1);
               },
               child: const Text("Create"),
             ),
@@ -30,14 +32,14 @@ class CrudOperationScreen extends StatelessWidget {
 
             ElevatedButton(
               onPressed: () {
-                update("pets", "kitty", "name", "Pussy");
+                services.updateData("pets", "kitty", "name", "Pussy");
               },
               child: const Text("Update"),
             ),
 
             ElevatedButton(
               onPressed: () {
-                delete("pets", "kitty");
+                services.deleteData("pets", "kitty");
               },
               child: const Text("Delete"),
             ),
@@ -58,8 +60,7 @@ class CrudOperationScreen extends StatelessWidget {
                     .collection("pets")
                     .snapshots(),
                 builder: (context, snapshot) {
-                  if (snapshot.connectionState ==
-                      ConnectionState.waiting) {
+                  if (snapshot.connectionState ==ConnectionState.waiting) {
                     return const Center(
                       child: CircularProgressIndicator(),
                     );
@@ -77,11 +78,16 @@ class CrudOperationScreen extends StatelessWidget {
                   return ListView.builder(
                     itemCount: petDocs.length,
                     itemBuilder: (context, index) {
-                      return ListTile(
-                        title: Text(petDocs[index]['name']),
-                        subtitle: Text(petDocs[index]['animal']),
-                        trailing: Text(
-                          petDocs[index]['age'].toString(),
+                      return Card(
+                        elevation: 10,
+                        child: ListTile(
+                          title: Text(petDocs[index]['name']),
+                          subtitle: Text(petDocs[index]['animal']),
+                          trailing: Text(
+                            petDocs[index]['age'].toString(),style: TextStyle(
+                              fontSize: 21
+                            ),
+                          ),
                         ),
                       );
                     },
