@@ -1,5 +1,5 @@
 import 'package:firebase_core/firebase_core.dart';
-import 'package:firebaselogindemo/Screens/LoginScreen.dart';
+import 'package:firebaselogindemo/Providers/AuthGate.dart';
 import 'package:flutter/material.dart';
 
 void main() async{
@@ -21,7 +21,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         colorScheme: .fromSeed(seedColor: Colors.deepPurple),
       ),
-      home: LoginScreen()
+      home: AuthGate()
     );
   }
 }

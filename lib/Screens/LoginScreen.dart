@@ -1,3 +1,5 @@
+import 'package:firebaselogindemo/Firebase/AuthService.dart';
+import 'package:firebaselogindemo/Screens/HomeScree.dart';
 import 'package:firebaselogindemo/Screens/SignUoScreen.dart';
 import 'package:flutter/material.dart';
 
@@ -17,8 +19,12 @@ class _LoginScreenState extends State<LoginScreen> {
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
   
+  FirebaseAuthHelper helper = FirebaseAuthHelper();
+
   @override
   Widget build(BuildContext context) {
+
+    
     return Scaffold(
       body: Padding(
         padding: const EdgeInsets.all(28.0),
@@ -67,7 +73,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       if(value!.isEmpty){
                         return "Password is Empty";
                       }
-                      else if(value.length<6){
+                      else if(value.toString().length<6){
                         return "Password must be greater than 6 Characters";
                       }
                       else{
@@ -79,9 +85,15 @@ class _LoginScreenState extends State<LoginScreen> {
                   Container(
                     width: double.infinity,
                     child: ElevatedButton(
-                      onPressed: (){
+                      onPressed: () async {
                         if(formLKey.currentState!.validate()){
-                          
+                          formLKey.currentState!.save();
+                          Future<bool> success=helper.login(emailController.text, passwordController.text);
+                          if(await success){
+                            Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>HomeScreen()));
+                          }else{
+                            ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Email Verification Failed")));
+                          }
                         }
                     }, child: Text("Login")),
                   ),

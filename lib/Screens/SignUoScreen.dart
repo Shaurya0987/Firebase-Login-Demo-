@@ -1,3 +1,4 @@
+import 'package:firebaselogindemo/Firebase/AuthService.dart';
 import 'package:firebaselogindemo/Screens/LoginScreen.dart';
 import 'package:flutter/material.dart';
 
@@ -19,6 +20,9 @@ class _SignuoscreenState extends State<Signuoscreen> {
   
   @override
   Widget build(BuildContext context) {
+
+    FirebaseAuthHelper helper = FirebaseAuthHelper();
+    
     return Scaffold(
       body: Padding(
         padding: const EdgeInsets.all(28.0),
@@ -80,7 +84,10 @@ class _SignuoscreenState extends State<Signuoscreen> {
                     width: double.infinity,
                     child: ElevatedButton(
                       onPressed: (){
-                    
+                        if(formLKey.currentState!.validate()){
+                          formLKey.currentState!.save();
+                          helper.signUp(emailController.text, passwordController.text);
+                        }
                     }, child: Text("Sign up")),
                   ),
                   SizedBox(height: 20,),
