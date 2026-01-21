@@ -36,6 +36,7 @@ class StudentDatabase {
   Future<void> deleteStudent(String collName, String docId) async {
     try {
       await _firestore.collection(collName).doc(docId).delete();
+      print("Student Deleted");
     } catch (e) {
       print("Error: $e");
     }
