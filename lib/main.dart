@@ -1,5 +1,6 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebaselogindemo/Screens/LoginScreen.dart';
+import 'package:firebaselogindemo/Screens/ProfileGate.dart';
 import 'package:flutter/material.dart';
 
 void main() async {
@@ -34,7 +35,7 @@ class MyApp extends StatelessWidget {
           )
         )
       ),
-      home: LoginScreen(),
+      home: ProfileScreen(),
     );
   }
 }
