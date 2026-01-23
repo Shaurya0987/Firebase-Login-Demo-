@@ -1,7 +1,6 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebaselogindemo/Screens/OperationScreen.dart';
 import 'package:firebaselogindemo/Screens/ProductScreen.dart';
-import 'package:firebaselogindemo/Screens/Products.dart';
 import 'package:flutter/material.dart';
 
 void main() async {
