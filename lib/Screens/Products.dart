@@ -12,41 +12,60 @@ class Products extends StatelessWidget {
         title: const Text("Products"),
       ),
       body: Padding(
-        padding: const EdgeInsets.all(28.0),
+        padding: const EdgeInsets.all(20),
         child: StreamBuilder<QuerySnapshot>(
           stream: FirebaseFirestore.instance
-              .collection("ukbs") // ✅ correct collection
+              .collection("ukbs") // ✅ CONFIRMED COLLECTION
               .snapshots(),
           builder: (context, snapshot) {
+            // 🔴 Handle errors
+            if (snapshot.hasError) {
+              return Center(
+                child: Text("Error: ${snapshot.error}"),
+              );
+            }
+
             // ⏳ Loading
             if (snapshot.connectionState == ConnectionState.waiting) {
               return const Center(child: CircularProgressIndicator());
             }
 
-            // ❌ No data
+            // 📭 Empty state
             if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
-              return const Center(child: Text("No Products Found..."));
+              return const Center(child: Text("No Products Found"));
             }
 
-            final products = snapshot.data!.docs;
+            final docs = snapshot.data!.docs;
 
             return ListView.builder(
-              itemCount: products.length,
+              itemCount: docs.length,
               itemBuilder: (context, index) {
-                // 🔐 SAFE map extraction
-                final data =
-                    products[index].data() as Map<String, dynamic>? ?? {};
+                // ✅ SAFE cast
+                final Map<String, dynamic> data =
+                    docs[index].data() as Map<String, dynamic>? ?? {};
+
+                // ✅ SAFE FIELD EXTRACTION
+                final String name =
+                    data['name']?.toString() ?? "No Name";
+
+                final int id =int.tryParse(docs[index].id) ?? 0;
+
+
+                final double price =
+                    double.tryParse(data['price']?.toString() ?? '0') ?? 0.0;
+
+                final String description =
+                    data['description']?.toString() ?? "No Description";
+
+                final bool isAvailable =
+                    data['isAvailable'] == true;
 
                 return ProductCard(
-                  productName: data['name'] ?? "No Name",
-                  productId: (data['id'] ?? 0) is int
-                      ? data['id']
-                      : int.tryParse(data['id']?.toString() ?? '0') ?? 0,
-                  price: (data['price'] is num)
-                      ? (data['price'] as num).toDouble()
-                      : 0.0,
-                  description: data['description'] ?? "No Description",
-                  isAvailable: data['isAvailable'] ?? false,
+                  productName: name,
+                  productId: id,
+                  price: price,
+                  description: description,
+                  isAvailable: isAvailable,
                 );
               },
             );
@@ -75,23 +94,22 @@ class ProductCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 10),
-      child: Container(
-        width: double.infinity,
+    return Card(
+      margin: const EdgeInsets.symmetric(vertical: 8),
+      elevation: 3,
+      child: Padding(
         padding: const EdgeInsets.all(14),
-        decoration: BoxDecoration(
-          color: Colors.grey.shade200,
-          borderRadius: BorderRadius.circular(12),
-        ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text("Product Name : $productName"),
-            Text("Product Id : $productId"),
-            Text("Price : ₹$price"),
-            Text("Description : $description"),
-            Text("Available : ${isAvailable ? "Yes" : "No"}"),
+            Text(
+              "Product Name: $productName",
+              style: const TextStyle(fontWeight: FontWeight.bold),
+            ),
+            Text("Product ID: $productId"),
+            Text("Price: ₹$price"),
+            Text("Description: $description"),
+            Text("Available: ${isAvailable ? "Yes" : "No"}"),
           ],
         ),
       ),
