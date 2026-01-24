@@ -64,6 +64,8 @@ class DefaultFirebaseOptions {
     messagingSenderId: '986227456229',
     projectId: 'fire-base-login-demo-ed04f',
     storageBucket: 'fire-base-login-demo-ed04f.firebasestorage.app',
+    androidClientId: '986227456229-h19ci6jau5v3b0dqvst0pipg8k01bsu6.apps.googleusercontent.com',
+    iosClientId: '986227456229-fh2tfc7b39f27ejogjlipfve2td1fb3q.apps.googleusercontent.com',
     iosBundleId: 'com.example.firebaselogindemo',
   );
 
@@ -73,6 +75,8 @@ class DefaultFirebaseOptions {
     messagingSenderId: '986227456229',
     projectId: 'fire-base-login-demo-ed04f',
     storageBucket: 'fire-base-login-demo-ed04f.firebasestorage.app',
+    androidClientId: '986227456229-h19ci6jau5v3b0dqvst0pipg8k01bsu6.apps.googleusercontent.com',
+    iosClientId: '986227456229-fh2tfc7b39f27ejogjlipfve2td1fb3q.apps.googleusercontent.com',
     iosBundleId: 'com.example.firebaselogindemo',
   );
 
@@ -85,4 +89,5 @@ class DefaultFirebaseOptions {
     storageBucket: 'fire-base-login-demo-ed04f.firebasestorage.app',
     measurementId: 'G-5HBPP2VCTR',
   );
+
 }
