@@ -1,31 +1,70 @@
+import 'dart:io';
+
+import 'package:firebaselogindemo/Firebase/Storage_DataBase.dart';
 import 'package:flutter/material.dart';
 
-class UploadScreen extends StatelessWidget {
+class UploadScreen extends StatefulWidget {
   const UploadScreen({super.key});
+
+  @override
+  State<UploadScreen> createState() => _UploadScreenState();
+}
+
+class _UploadScreenState extends State<UploadScreen> {
+  final StorageDatabase service = StorageDatabase();
+
+  File? selectedImage; // ✅ STORE IMAGE HERE
+  String? imageUrl;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        title: Text("Upload Images & Files"),
+        title: const Text("Upload Images"),
       ),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            ElevatedButton(onPressed: (){
+            // 📸 PICK IMAGE
+            ElevatedButton(
+              onPressed: () async {
+                final image = await service.pickImage();
+                if (image != null) {
+                  setState(() {
+                    selectedImage = image;
+                  });
+                }
+              },
+              child: const Text("Choose Image"),
+            ),
 
-            }, child: Text("Choose Image")),
-            ElevatedButton(onPressed: (){
+            const SizedBox(height: 10),
 
-            }, child: Text("Choose File")),
-            ElevatedButton(onPressed: (){
+            // 👁 PREVIEW IMAGE
+            if (selectedImage != null)
+              Image.file(
+                selectedImage!,
+                height: 120,
+              ),
 
-            }, child: Text("Upload Image")),
-            ElevatedButton(onPressed: (){
+            const SizedBox(height: 20),
 
-            }, child: Text("Upload File")),
+            // ☁️ UPLOAD IMAGE
+            ElevatedButton(
+              onPressed: selectedImage == null
+                  ? null
+                  : () async {
+                      imageUrl = await service.uploadImage(
+                        imageFile: selectedImage!,
+                        fileName: "101", // product id
+                      );
+
+                      print("Uploaded Image URL: $imageUrl");
+                    },
+              child: const Text("Upload Image"),
+            ),
           ],
         ),
       ),
