@@ -18,11 +18,13 @@ class UserDatabase {
 
   /// Update user profile (partial update)
   Future<void> updateUser(String uid, Map<String, dynamic> data) async {
-    try {
-      await _firestore.collection('profiles').doc(uid).update(data);
-    } catch (e) {
-      print("Update User Error: $e");
-    }
+    await _firestore.collection('profiles').doc(uid).set(
+      {
+        ...data,
+        "updatedAt": FieldValue.serverTimestamp(),
+      },
+      SetOptions(merge: true),
+    );
   }
 
   /// Delete user profile
